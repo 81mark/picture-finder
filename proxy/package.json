@@ -1,0 +1,21 @@
+{
+	"name": "proxy",
+	"version": "1.0.0",
+	"description": "Proxy for API",
+	"main": "app.js",
+	"scripts": {
+		"start": "node app.js",
+		"dev": "nodemon app.js"
+	},
+	"author": "Mark Fernandez",
+	"license": "ISC",
+	"dependencies": {
+		"axios": "^0.19.2",
+		"cors": "^2.8.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"helmet": "^3.22.0",
+		"hpp": "^0.2.3",
+		"xss-clean": "^0.1.1"
+	}
+}

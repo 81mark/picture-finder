@@ -1,23 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import ImageCard from './components/ImageCard';
 import ImageSearch from './components/ImageSearch';
+import Pagination from './components/Pagination';
+import Axios from 'axios';
 
 function App() {
 	const [images, setImages] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [term, setTerm] = useState('');
+	const [page, setPage] = useState(1);
 
 	useEffect(() => {
-		fetch(
-			`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${term}&image_type=photo&pretty=true`
-		)
-			.then((res) => res.json())
-			.then((data) => {
-				setImages(data.hits);
+		const getImages = async () => {
+			try {
+				const results = await Axios.get(
+					`api/v1/get-images?q=${term}&p=${page}`
+				);
+				const images = results.data.images;
+				if (results.data.success === true) {
+					setImages(images.hits);
+					setIsLoading(false);
+				} else if (results.data.success === false) {
+					setIsLoading(false);
+				}
+			} catch (err) {
 				setIsLoading(false);
-			})
-			.catch((err) => console.log('error? ', err));
-	}, [term]);
+				console.error(err.response.status);
+				// TODO Better error handling for future
+			}
+		};
+		getImages();
+	}, [page, term]);
 
 	return (
 		<div className='container mx-auto'>
@@ -40,6 +53,15 @@ function App() {
 					))}
 				</div>
 			)}
+
+			<Pagination page={page} newPage={(page) => setPage(page)} />
+			<a href='https://pixabay.com/' title='See Pixabay for more images'>
+				<img
+					className='max-w-sm overflow-hidden mx-auto'
+					src={`${process.env.PUBLIC_URL}/pixabay.png`}
+					alt='All pictures are from Pixabay'
+				/>
+			</a>
 		</div>
 	);
 }
