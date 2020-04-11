@@ -12,12 +12,11 @@
 		"react-scripts": "3.4.1"
 	},
 	"scripts": {
-		"start": "npm run watch:css && react-scripts start",
+		"start": "node proxy/app.js",
+		"client": "npm run watch:css && react-scripts start",
 		"build": "npm run build:css && react-scripts build",
 		"server": "nodemon proxy/app.js",
-		"dev": "concurrently \"npm run server\" \"npm run start\"",
-		"test": "react-scripts test",
-		"eject": "react-scripts eject",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
 		"build:css": "postcss src/assets/tailwind.css -o src/assets/main.css",
 		"watch:css": "postcss src/assets/tailwind.css -o src/assets/main.css"
 	},
