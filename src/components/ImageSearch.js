@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 
-const ImageSearch = ({ searchText }) => {
+const ImageSearch = ({ searchText, newPage }) => {
 	const [text, setText] = useState('');
 
 	const onSubmit = (e) => {
 		e.preventDefault();
 		searchText(text);
+		newPage(1);
 	};
 
 	return (

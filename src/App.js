@@ -36,7 +36,11 @@ function App() {
 
 	return (
 		<div className='container mx-auto'>
-			<ImageSearch searchText={(text) => setTerm(text)} />
+			<ImageSearch
+				searchText={(text) => setTerm(text)}
+				page={page}
+				newPage={(page) => setPage(page)}
+			/>
 
 			{!isLoading && images.length === 0 && (
 				<h1 className='text-4xl text-center mx-auto mt-32 text-blue-600'>
