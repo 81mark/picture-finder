@@ -14,7 +14,9 @@ function App() {
 		const getImages = async () => {
 			try {
 				const results = await Axios.get(
-					`api/v1/get-images?q=${term}&p=${page}`
+					// proxy via Heroku instead of local
+					`https://picture-proxy.herokuapp.com/api/v1/get-images?q=${term}&p=${page}`
+					// `api/v1/get-images?q=${term}&p=${page}`
 				);
 				const images = results.data.images;
 				if (results.data.success === true) {
@@ -25,7 +27,7 @@ function App() {
 				}
 			} catch (err) {
 				setIsLoading(false);
-				console.error(err.response.status);
+				console.error(`Error ${err}`);
 				// TODO Better error handling for future
 			}
 		};
