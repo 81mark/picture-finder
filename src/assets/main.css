@@ -10922,6 +10922,10 @@ video {
   transition-duration: 1000ms;
 }
 
+*:focus {
+  outline: none !important;
+}
+
 @media (min-width: 320) {
   .xs\:sr-only {
     position: absolute;
