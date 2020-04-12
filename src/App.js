@@ -9,6 +9,8 @@ function App() {
 	const [isLoading, setIsLoading] = useState(true);
 	const [term, setTerm] = useState('');
 	const [page, setPage] = useState(1);
+	const [error, setError] = useState(false);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	useEffect(() => {
 		const getImages = async () => {
@@ -18,6 +20,7 @@ function App() {
 					`https://picture-proxy.herokuapp.com/api/v1/get-images?q=${term}&p=${page}`
 					// `api/v1/get-images?q=${term}&p=${page}`
 				);
+
 				const images = results.data.images;
 				if (results.data.success === true) {
 					setImages(images.hits);
@@ -27,7 +30,10 @@ function App() {
 				}
 			} catch (err) {
 				setIsLoading(false);
-				console.error(`Error ${err}`);
+				setError(true);
+				setErrorMessage(
+					`Error with a status code of ${err.response.status}, ${err.response.statusText}. 😥😥`
+				);
 				// TODO Better error handling for future
 			}
 		};
@@ -41,8 +47,13 @@ function App() {
 				page={page}
 				newPage={(page) => setPage(page)}
 			/>
+			{error && !isLoading && (
+				<h1 className='text-2xl text-center mx-auto mt-32 text-red-600'>
+					{errorMessage}
+				</h1>
+			)}
 
-			{!isLoading && images.length === 0 && (
+			{!error && !isLoading && images.length === 0 && (
 				<h1 className='text-4xl text-center mx-auto mt-32 text-blue-600'>
 					No images were found...
 				</h1>
@@ -63,7 +74,7 @@ function App() {
 			<Pagination page={page} newPage={(page) => setPage(page)} />
 			<a href='https://pixabay.com/' title='See Pixabay for more images'>
 				<img
-					className='max-w-sm overflow-hidden mx-auto'
+					className='max-w-sm overflow-hidden mx-auto mb-6'
 					src={`${process.env.PUBLIC_URL}/pixabay.png`}
 					alt='All pictures are from Pixabay'
 				/>
